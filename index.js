@@ -10,7 +10,6 @@ const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52K
 // Endpoint to handle slot spins and jackpot logic
 app.get("/spin", async (req, res) => {
   const username = req.query.username;
-  const jackpotProbability = 0.001; // 1% chance of winning the jackpot
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
   let slots;
@@ -19,18 +18,16 @@ app.get("/spin", async (req, res) => {
   const randomValue = Math.random(); // Log the random value to see how it's behaving
   console.log(`Random value: ${randomValue}`);
 
-  if (randomValue < jackpotProbability) {
-    const jackpotEmote = emotes[Math.floor(Math.random() * emotes.length)];
-    slots = [jackpotEmote, jackpotEmote, jackpotEmote];
-    isJackpot = true;
-  } else {
-    slots = [
-      emotes[Math.floor(Math.random() * emotes.length)],
-      emotes[Math.floor(Math.random() * emotes.length)],
-      emotes[Math.floor(Math.random() * emotes.length)]
-    ];
-    isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
-  }
+ // Pure random slot spin
+slots = [
+  emotes[Math.floor(Math.random() * emotes.length)],
+  emotes[Math.floor(Math.random() * emotes.length)],
+  emotes[Math.floor(Math.random() * emotes.length)]
+];
+
+// Jackpot happens only if all three match
+isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
+
 
   const slotDisplay = slots.join(" | ");
 
