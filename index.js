@@ -39,8 +39,8 @@ app.get("/", async (req, res) => {
     }
   }
 
-  // Send jackpot message with a single random reward (only if jackpot is hit)
-  res.send(`${req.query.username} spins... ${reward} - JACKPOT! lepH You have won ${reward}`);
+  // Send only the reward message (Nightbot handles the rest)
+  res.send(`${reward}`);
 });
 
 // Endpoint to check jackpot wins for a specific username
