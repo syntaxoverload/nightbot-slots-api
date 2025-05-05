@@ -6,7 +6,6 @@ const PORT = process.env.PORT || 5000;
 // Google Apps Script URL to fetch slot wins data
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52KMajtNDedUJO3a_PEN9IuKJNCBHPE3S3U2S-Qv-aIY-ykKSZPBlIhBA/exec";
 
-// Endpoint to handle slot spins
 app.get("/", (req, res) => {
   const rewards = [
     "a golf trip! lepGOLF",
@@ -26,7 +25,6 @@ app.get("/", (req, res) => {
     "priceless art! lepFLIRTBYLEP"
   ];
 
-  // Randomly pick 3 rewards and check for jackpot
   const a = Math.floor(Math.random() * rewards.length);
   const b = Math.floor(Math.random() * rewards.length);
   const c = Math.floor(Math.random() * rewards.length);
@@ -50,15 +48,16 @@ app.get("/check", async (req, res) => {
   }
 
   try {
-    // Fetch win count data from Google Apps Script
+    console.log(`Checking wins for username: ${username}`); // Debugging line
+
     const response = await fetch(`${googleScriptUrl}?username=${username}`);
     const data = await response.text();
 
-    // If user has won jackpot before, show the result
+    console.log(`Google Sheets response: ${data}`); // Debugging line
+
     if (data.includes("has won the jackpot")) {
-      res.send(data);  // Return the win data from Google Apps Script
+      res.send(data);
     } else {
-      // If no wins are found, show a message
       res.send(`${username} has never won a jackpot! lepHANDS`);
     }
   } catch (error) {
