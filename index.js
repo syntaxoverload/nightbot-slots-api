@@ -25,7 +25,7 @@ const rewards = [
 ];
 
 // Control the chance of hitting jackpot here (e.g., 0.05 = 5%)
-const jackpotChance = 0.95;
+const jackpotChance = 1.00;
 
 // Log jackpot to Google Sheets
 async function logJackpot(username) {
