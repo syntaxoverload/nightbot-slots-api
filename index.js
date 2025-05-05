@@ -7,7 +7,6 @@ const PORT = process.env.PORT || 5000;
 // Google Apps Script URL to fetch slot wins data
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52KMajtNDedUJO3a_PEN9IuKJNCBHPE3S3U2S-Qv-aIY-ykKSZPBlIhBA/exec";
 
-// Endpoint to handle spins and track wins
 app.get("/", (req, res) => {
   const rewards = [
     "a golf trip! lepGOLF",
@@ -27,32 +26,46 @@ app.get("/", (req, res) => {
     "priceless art! lepFLIRTBYLEP"
   ];
 
-  const a = Math.floor(Math.random() * rewards.length);
-  const b = Math.floor(Math.random() * rewards.length);
-  const c = Math.floor(Math.random() * rewards.length);
+  // Select one random reward from the rewards list
+  const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
-  const rewardString = `${rewards[a]} | ${rewards[b]} | ${rewards[c]}`;
-  const jackpot = a === b && b === c; // Check if the 3 emotes match (jackpot condition)
+  // 5% chance of hitting a jackpot (this can be adjusted)
+  const jackpot = Math.random() < 0.90;
 
   if (jackpot) {
-    const jackpotReward = rewards[Math.floor(Math.random() * rewards.length)];
-    
-    // Write to Google Sheets when the user wins
-    const username = req.query.username; // You should pass the username as a query parameter
-    if (username) {
-      fetch(`${googleScriptUrl}?username=${username}`, { method: 'GET' })
-        .then((response) => response.text())
-        .then((data) => {
-          console.log(`Google Sheets response: ${data}`);
-        })
-        .catch((error) => {
-          console.error('Error writing to Google Sheets:', error);
-        });
-    }
-
-    res.send(`${rewardString} - JACKPOT! lepH You have won ${jackpotReward}`);
+    // Send jackpot message with a single random reward
+    res.send(`${req.query.username} spins... ${reward} - JACKPOT! lepH You have won ${reward}`);
   } else {
-    res.send(`${rewardString} - Try again! lepPOINT`);
+    // Non-jackpot spin message
+    res.send(`${req.query.username} spins... ${reward} - Try again! lepPOINT`);
+  }
+});
+
+// Endpoint to check jackpot wins for a specific username
+app.get("/check", async (req, res) => {
+  const username = req.query.username;
+  if (!username) {
+    return res.status(400).send("Missing username");
+  }
+
+  try {
+    console.log(`Checking wins for username: ${username}`); // Debugging line
+
+    // Make request to Google Apps Script
+    const response = await fetch(`${googleScriptUrl}?username=${username}`);
+    const data = await response.text();
+
+    console.log(`Google Sheets response: ${data}`); // Debugging line
+
+    // Make sure the response is plain text
+    if (data.includes("has won the jackpot")) {
+      res.type('text').send(data);  // Ensure response is plain text
+    } else {
+      res.type('text').send(`${username} has never won a jackpot! lepHANDS`);
+    }
+  } catch (error) {
+    console.error("Error fetching data from Google Apps Script:", error);
+    res.status(500).send("Error fetching data from Google Sheets.");
   }
 });
 
