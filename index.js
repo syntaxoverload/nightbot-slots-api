@@ -10,13 +10,16 @@ const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52K
 // Endpoint to handle slot spins and jackpot logic
 app.get("/spin", async (req, res) => {
   const username = req.query.username;
-  const jackpotProbability = 0.01; // Change this to adjust jackpot chance (e.g., 0.05 for 5%)
+  const jackpotProbability = 0.01; // 1% chance of winning the jackpot
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
   let slots;
   let isJackpot = false;
 
-  if (Math.random() < jackpotProbability) {
+  const randomValue = Math.random(); // Log the random value to see how it's behaving
+  console.log(`Random value: ${randomValue}`);
+
+  if (randomValue < jackpotProbability) {
     const jackpotEmote = emotes[Math.floor(Math.random() * emotes.length)];
     slots = [jackpotEmote, jackpotEmote, jackpotEmote];
     isJackpot = true;
@@ -32,7 +35,6 @@ app.get("/spin", async (req, res) => {
   const slotDisplay = slots.join(" | ");
 
   if (isJackpot && username) {
-    // Log the jackpot win to the spreadsheet using a POST request
     try {
       await fetch(googleScriptUrl, {
         method: "POST",
@@ -43,7 +45,6 @@ app.get("/spin", async (req, res) => {
       console.error("Error logging jackpot to Google Sheets:", error);
     }
 
-    // Pick a random reward for display only
     const rewards = [
       "a golf trip! lepGOLF",
       "bananas! lepPOG lepBANANA",
@@ -67,27 +68,6 @@ app.get("/spin", async (req, res) => {
   return res.send(`${username} spins... ${slotDisplay} - Try again! lepPOINT`);
 });
 
-// Endpoint to check jackpot wins for a specific username
-app.get("/check", async (req, res) => {
-  const username = req.query.username;
-  if (!username) {
-    return res.status(400).send("Missing username");
-  }
-
-  try {
-    const response = await fetch(`${googleScriptUrl}?username=${username}`);
-    const data = await response.text();
-
-    if (data.includes("has")) {
-      res.type("text").send(data);
-    } else {
-      res.type("text").send(`${username} has never won a jackpot! lepHANDS`);
-    }
-  } catch (error) {
-    console.error("Error fetching data from Google Sheets:", error);
-    res.status(500).send("Error fetching data.");
-  }
-});
 
 // Start the server
 app.listen(PORT, () => {
