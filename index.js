@@ -1,14 +1,14 @@
 import express from "express";
-import fetch from "node-fetch";
+import fetch from "node-fetch";  // Ensure node-fetch is installed
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Google Apps Script URL to log and fetch slot jackpot wins
+// Google Apps Script URL to fetch slot wins data
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52KMajtNDedUJO3a_PEN9IuKJNCBHPE3S3U2S-Qv-aIY-ykKSZPBlIhBA/exec";
 
-// Root endpoint: handles spinning and logs jackpot wins if a username is provided
-app.get("/", async (req, res) => {
+// Endpoint to handle spins and track wins
+app.get("/", (req, res) => {
   const rewards = [
     "a golf trip! lepGOLF",
     "bananas! lepPOG lepBANANA",
@@ -30,54 +30,29 @@ app.get("/", async (req, res) => {
   const a = Math.floor(Math.random() * rewards.length);
   const b = Math.floor(Math.random() * rewards.length);
   const c = Math.floor(Math.random() * rewards.length);
+
   const rewardString = `${rewards[a]} | ${rewards[b]} | ${rewards[c]}`;
-  const jackpot = a === b && b === c;
+  const jackpot = a === b && b === c; // Check if the 3 emotes match (jackpot condition)
 
   if (jackpot) {
-    const username = req.query.username || null;
-
-    if (username) {
-      try {
-        await fetch(googleScriptUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username }),
-        });
-      } catch (error) {
-        console.error("Failed to log jackpot win:", error);
-      }
-    }
-
     const jackpotReward = rewards[Math.floor(Math.random() * rewards.length)];
-    return res.send(`${rewardString} - JACKPOT! lepH You have won ${jackpotReward}`);
-  } else {
-    return res.send(`${rewardString} - Try again! lepPOINT`);
-  }
-});
-
-// Endpoint to check how many times a user has won
-app.get("/check", async (req, res) => {
-  const username = req.query.username;
-  if (!username) {
-    return res.status(400).send("Missing username");
-  }
-
-  try {
-    console.log(`Checking wins for username: ${username}`);
-
-    const response = await fetch(`${googleScriptUrl}?username=${username}`);
-    const data = await response.text();
-
-    console.log(`Google Sheets response: ${data}`);
-
-    if (data.includes("has")) {
-      res.type("text").send(data);
-    } else {
-      res.type("text").send(`${username} has never won a jackpot! lepHANDS`);
+    
+    // Write to Google Sheets when the user wins
+    const username = req.query.username; // You should pass the username as a query parameter
+    if (username) {
+      fetch(`${googleScriptUrl}?username=${username}`, { method: 'GET' })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(`Google Sheets response: ${data}`);
+        })
+        .catch((error) => {
+          console.error('Error writing to Google Sheets:', error);
+        });
     }
-  } catch (error) {
-    console.error("Error fetching data from Google Apps Script:", error);
-    res.status(500).send("Error fetching data from Google Sheets.");
+
+    res.send(`${rewardString} - JACKPOT! lepH You have won ${jackpotReward}`);
+  } else {
+    res.send(`${rewardString} - Try again! lepPOINT`);
   }
 });
 
