@@ -57,11 +57,11 @@ app.get("/check", async (req, res) => {
 
     console.log(`Google Sheets response: ${data}`); // Debugging line
 
-    // Check if the data contains win information
+    // Make sure the response is plain text
     if (data.includes("has won the jackpot")) {
-      res.send(data);
+      res.type('text').send(data);  // Ensure response is plain text
     } else {
-      res.send(`${username} has never won a jackpot! lepHANDS`);
+      res.type('text').send(`${username} has never won a jackpot! lepHANDS`);
     }
   } catch (error) {
     console.error("Error fetching data from Google Apps Script:", error);
