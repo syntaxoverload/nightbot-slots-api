@@ -1,5 +1,6 @@
 import express from "express";
 import fetch from "node-fetch";  // Ensure node-fetch is installed
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -50,11 +51,13 @@ app.get("/check", async (req, res) => {
   try {
     console.log(`Checking wins for username: ${username}`); // Debugging line
 
+    // Make request to Google Apps Script
     const response = await fetch(`${googleScriptUrl}?username=${username}`);
     const data = await response.text();
 
     console.log(`Google Sheets response: ${data}`); // Debugging line
 
+    // Check if the data contains win information
     if (data.includes("has won the jackpot")) {
       res.send(data);
     } else {
