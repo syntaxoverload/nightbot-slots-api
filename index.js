@@ -10,7 +10,7 @@ const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52K
 // Endpoint to handle slot spins and jackpot logic
 app.get("/spin", async (req, res) => {
   const username = req.query.username;
-  const jackpotProbability = 0.0333; // Change this to adjust jackpot chance (e.g., 0.05 for 5%)
+  const jackpotProbability = 0.015; // Change this to adjust jackpot chance (e.g., 0.05 for 5%)
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
   let slots;
