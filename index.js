@@ -15,19 +15,15 @@ app.get("/spin", async (req, res) => {
   let slots;
   let isJackpot = false;
 
-  const randomValue = Math.random(); // Log the random value to see how it's behaving
-  console.log(`Random value: ${randomValue}`);
+  // Pure random slot spin
+  slots = [
+    emotes[Math.floor(Math.random() * emotes.length)],
+    emotes[Math.floor(Math.random() * emotes.length)],
+    emotes[Math.floor(Math.random() * emotes.length)]
+  ];
 
- // Pure random slot spin
-slots = [
-  emotes[Math.floor(Math.random() * emotes.length)],
-  emotes[Math.floor(Math.random() * emotes.length)],
-  emotes[Math.floor(Math.random() * emotes.length)]
-];
-
-// Jackpot happens only if all three match
-isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
-
+  // Jackpot happens only if all three match
+  isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
 
   const slotDisplay = slots.join(" | ");
 
@@ -64,7 +60,6 @@ isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
 
   return res.send(`${username} spins... ${slotDisplay} - Try again! lepPOINT`);
 });
-
 
 // Start the server
 app.listen(PORT, () => {
