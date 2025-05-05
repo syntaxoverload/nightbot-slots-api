@@ -1,13 +1,14 @@
 import express from "express";
-import fetch from "node-fetch";  // Ensure node-fetch is installed
+import fetch from "node-fetch";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Google Apps Script URL to fetch slot wins data
+// Google Apps Script URL to log and fetch slot jackpot wins
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52KMajtNDedUJO3a_PEN9IuKJNCBHPE3S3U2S-Qv-aIY-ykKSZPBlIhBA/exec";
 
-app.get("/", (req, res) => {
+// Root endpoint: handles spinning and logs jackpot wins if a username is provided
+app.get("/", async (req, res) => {
   const rewards = [
     "a golf trip! lepGOLF",
     "bananas! lepPOG lepBANANA",
@@ -29,19 +30,32 @@ app.get("/", (req, res) => {
   const a = Math.floor(Math.random() * rewards.length);
   const b = Math.floor(Math.random() * rewards.length);
   const c = Math.floor(Math.random() * rewards.length);
-
   const rewardString = `${rewards[a]} | ${rewards[b]} | ${rewards[c]}`;
   const jackpot = a === b && b === c;
 
   if (jackpot) {
+    const username = req.query.username || null;
+
+    if (username) {
+      try {
+        await fetch(googleScriptUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username }),
+        });
+      } catch (error) {
+        console.error("Failed to log jackpot win:", error);
+      }
+    }
+
     const jackpotReward = rewards[Math.floor(Math.random() * rewards.length)];
-    res.send(`${rewardString} - JACKPOT! lepH You have won ${jackpotReward}`);
+    return res.send(`${rewardString} - JACKPOT! lepH You have won ${jackpotReward}`);
   } else {
-    res.send(`${rewardString} - Try again! lepPOINT`);
+    return res.send(`${rewardString} - Try again! lepPOINT`);
   }
 });
 
-// Endpoint to check jackpot wins for a specific username
+// Endpoint to check how many times a user has won
 app.get("/check", async (req, res) => {
   const username = req.query.username;
   if (!username) {
@@ -49,19 +63,17 @@ app.get("/check", async (req, res) => {
   }
 
   try {
-    console.log(`Checking wins for username: ${username}`); // Debugging line
+    console.log(`Checking wins for username: ${username}`);
 
-    // Make request to Google Apps Script
     const response = await fetch(`${googleScriptUrl}?username=${username}`);
     const data = await response.text();
 
-    console.log(`Google Sheets response: ${data}`); // Debugging line
+    console.log(`Google Sheets response: ${data}`);
 
-    // Make sure the response is plain text
-    if (data.includes("has won the jackpot")) {
-      res.type('text').send(data);  // Ensure response is plain text
+    if (data.includes("has")) {
+      res.type("text").send(data);
     } else {
-      res.type('text').send(`${username} has never won a jackpot! lepHANDS`);
+      res.type("text").send(`${username} has never won a jackpot! lepHANDS`);
     }
   } catch (error) {
     console.error("Error fetching data from Google Apps Script:", error);
