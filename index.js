@@ -4,10 +4,10 @@ import fetch from "node-fetch";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Google Apps Script URL (should be the POST-capable version)
+// Google Apps Script URL
 const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52KMajtNDedUJO3a_PEN9IuKJNCBHPE3S3U2S-Qv-aIY-ykKSZPBlIhBA/exec";
 
-// Endpoint to handle slot spins and jackpot logic
+// Slot spin endpoint
 app.get("/spin", async (req, res) => {
   const username = req.query.username;
 
@@ -59,6 +59,26 @@ app.get("/spin", async (req, res) => {
   }
 
   return res.send(`${username} spins... ${slotDisplay} - Try again! lepPOINT`);
+});
+
+// New route to handle !slotswin lookup
+app.get("/check", async (req, res) => {
+  const username = req.query.username;
+
+  if (!username) {
+    return res.status(400).send("Missing username");
+  }
+
+  const checkUrl = `${googleScriptUrl}?username=${encodeURIComponent(username)}`;
+
+  try {
+    const response = await fetch(checkUrl);
+    const text = await response.text();
+    return res.send(text);
+  } catch (error) {
+    console.error("Error fetching from Google Script:", error);
+    return res.status(500).send("Error connecting to Google Script");
+  }
 });
 
 // Start the server
