@@ -46,6 +46,8 @@ app.get("/spin", async (req, res) => {
       "pizza! lepPIZZA",
       "sausage! lepSAUSAGE",
       "beer! lepFBEERS",
+      "a personal chef! lepCHEF",
+      "a pet chicken! lepC",
       "a flight on lepAir lepFLY",
       "a new fridge! lepFRIDGE",
       "1 billion dollars! lepBURNMONEY",
