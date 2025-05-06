@@ -63,15 +63,18 @@ app.get("/spin", async (req, res) => {
   return res.send(`${username} spins... ${slotDisplay} - Try again! lepPOINT`);
 });
 
-// New route to handle !slotswin lookup
+// Unified route for !slotswin and !lastslotswin
 app.get("/check", async (req, res) => {
-  const username = req.query.username;
+  const { username, mode } = req.query;
 
-  if (!username) {
-    return res.status(400).send("Missing username");
+  let checkUrl;
+  if (mode === "lastwin") {
+    checkUrl = `${googleScriptUrl}?mode=lastwin`;
+  } else if (username) {
+    checkUrl = `${googleScriptUrl}?username=${encodeURIComponent(username)}`;
+  } else {
+    return res.status(400).send("Missing required query parameter.");
   }
-
-  const checkUrl = `${googleScriptUrl}?username=${encodeURIComponent(username)}`;
 
   try {
     const response = await fetch(checkUrl);
