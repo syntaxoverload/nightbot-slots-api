@@ -12,19 +12,13 @@ app.get("/spin", async (req, res) => {
   const username = req.query.username;
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
-  let slots;
-  let isJackpot = false;
-
-  // Pure random slot spin
-  slots = [
+  let slots = [
     emotes[Math.floor(Math.random() * emotes.length)],
     emotes[Math.floor(Math.random() * emotes.length)],
     emotes[Math.floor(Math.random() * emotes.length)]
   ];
 
-  // Jackpot happens only if all three match
-  isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
-
+  const isJackpot = slots[0] === slots[1] && slots[1] === slots[2];
   const slotDisplay = slots.join(" | ");
 
   if (isJackpot && username) {
@@ -82,6 +76,21 @@ app.get("/check", async (req, res) => {
     return res.send(text);
   } catch (error) {
     console.error("Error fetching from Google Script:", error);
+    return res.status(500).send("Error connecting to Google Script");
+  }
+});
+
+// Route for !topslots with optional limit (up to 5)
+app.get("/topslots", async (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit) || 1, 5);
+  const checkUrl = `${googleScriptUrl}?mode=topslots&limit=${limit}`;
+
+  try {
+    const response = await fetch(checkUrl);
+    const text = await response.text();
+    return res.send(text);
+  } catch (error) {
+    console.error("Error fetching top slots:", error);
     return res.status(500).send("Error connecting to Google Script");
   }
 });
