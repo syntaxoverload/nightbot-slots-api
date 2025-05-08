@@ -44,8 +44,15 @@ app.get("/spin", async (req, res) => {
       "a pet chicken! lepC",
       "a flight on lepAir lepFLY",
       "a new fridge! lepFRIDGE",
+      "KIRKLAND brand sparkling water! lepJEJ",
       "1 billion dollars! lepBURNMONEY",
       "priceless art! lepYEPBYLEP",
+      "priceless art! lepART",
+      "your very own Lepvengers Team! lepASSEMBLE",
+      "a free tower carry! lepCARRY",
+      "free piano lessons by keyboard cat! MEOW lepKB",
+      "a clown with cheese! lepCLOWN lepCHEESE",
+      "a trip to jail. lepJAIL",
       "a new washing machine! lepSTUCK",
       "an invisibility cloak! lepSTEALTH"
     ];
