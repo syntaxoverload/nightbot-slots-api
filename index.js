@@ -104,6 +104,10 @@ app.get("/topslots", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("Nightbot Slots is live! 🎰");
+});
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
