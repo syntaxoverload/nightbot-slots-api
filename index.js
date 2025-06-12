@@ -89,10 +89,12 @@ app.get("/check", async (req, res) => {
   }
 });
 
-// Route for !topslots with optional limit (up to 5)
+// Route for !topslots with optional limit (up to 10)
 app.get("/topslots", async (req, res) => {
-  const limit = Math.min(parseInt(req.query.limit) || 1, 5);
-  const checkUrl = `${googleScriptUrl}?mode=topslots&limit=${limit}`;
+  const rawLimit = parseInt(req.query.limit);
+  const limit = isNaN(rawLimit) ? 1 : rawLimit;
+  const caller = req.query.caller || "friend";
+  const checkUrl = `${googleScriptUrl}?mode=topslots&limit=${limit}&caller=${encodeURIComponent(caller)}`;
 
   try {
     const response = await fetch(checkUrl);
@@ -103,6 +105,7 @@ app.get("/topslots", async (req, res) => {
     return res.status(500).send("Error connecting to Google Script");
   }
 });
+
 
 app.get("/", (req, res) => {
   res.send("Nightbot Slots is live! 🎰");
