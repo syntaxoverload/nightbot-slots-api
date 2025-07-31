@@ -57,6 +57,7 @@ app.get("/spin", async (req, res) => {
       "a trip to jail! lepJAIL",
       "a new washing machine! lepSTUCK",
       "an invisibility cloak! lepSTEALTH"
+      "a job in the mines! lepBUSINESS"
     ];
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
