@@ -49,6 +49,7 @@ app.get("/spin", async (req, res) => {
       "priceless art! lepYEPBYLEP",
       "priceless art! lepART",
       "priceless art! lepPAUSEBYKATE",
+      "priceless art! lepGASMBYLEP",
       "your very own Lepvengers Team! lepASSEMBLE",
       "a free tower carry! lepCARRY",
       "a new hot tub! lepTUB",
