@@ -53,6 +53,7 @@ app.get("/spin", async (req, res) => {
       "your very own Lepvengers Team! lepASSEMBLE",
       "a free tower carry! lepCARRY",
       "a new hot tub! lepTUB",
+      "a cup of coffee! lepCLASSIC",
       "free piano lessons by keyboard cat! MEOW lepKB",
       "a clown with cheese! lepCLOWN lepCHEESE",
       "a trip to jail! lepJAIL",
