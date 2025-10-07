@@ -58,6 +58,7 @@ app.get("/spin", async (req, res) => {
       "a free hot yoga class! lepSUSSY lepSTRETCH",
       "a clown with cheese! lepCLOWN lepCHEESE",
       "a trip to jail! lepJAIL",
+      "an exorcism! lepMONK",
       "a new washing machine! lepSTUCK",
       "a lep walk! lepGO",
       "an invisibility cloak! lepSTEALTH",
