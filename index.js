@@ -15,7 +15,7 @@ app.get("/spin", async (req, res) => {
   // Clean up unsafe characters and trim length
   const cleanMessage = rawMessage
     .replace(/[^\w\s'!?.:-]/g, "")
-    .substring(0, 80)
+    .substring(0, 60)
     .trim();
 
   // Only include message if user typed something
