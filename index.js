@@ -9,10 +9,17 @@ const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52K
 
 // Slot spin endpoint
 app.get("/spin", async (req, res) => {
-  const username = req.query.username;
+  const username = req.query.username || "someone";
+  const rawMessage = req.query.message || "";
+  const cleanMessage = rawMessage
+    .replace(/[^\w\s'!?.-]/g, "")  // clean up unsafe characters
+    .substring(0, 40)               // limit to 40 chars
+    .trim();
+
+  const message = cleanMessage ? ` for ${cleanMessage}` : "";
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
-  let slots = [
+  const slots = [
     emotes[Math.floor(Math.random() * emotes.length)],
     emotes[Math.floor(Math.random() * emotes.length)],
     emotes[Math.floor(Math.random() * emotes.length)]
@@ -66,10 +73,10 @@ app.get("/spin", async (req, res) => {
     ];
     const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
-    return res.send(`${username} spins... ${slotDisplay} - JACKPOT! lepH You have won ${reward}`);
+    return res.send(`${username} spins${message}... ${slotDisplay} - JACKPOT! lepH You have won ${reward}`);
   }
 
-  return res.send(`${username} spins... ${slotDisplay} - Try again! lepPOINT`);
+  return res.send(`${username} spins${message}... ${slotDisplay} - Try again! lepPOINT`);
 });
 
 // Unified route for !slotswin and !lastslotswin
