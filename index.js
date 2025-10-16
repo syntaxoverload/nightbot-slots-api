@@ -11,12 +11,15 @@ const googleScriptUrl = "https://script.google.com/macros/s/AKfycbyS7m0yF5NOl52K
 app.get("/spin", async (req, res) => {
   const username = req.query.username || "someone";
   const rawMessage = req.query.message || "";
+
+  // Clean up unsafe characters and trim length
   const cleanMessage = rawMessage
-    .replace(/[^\w\s'!?.-]/g, "")  // clean up unsafe characters
-    .substring(0, 40)               // limit to 40 chars
+    .replace(/[^\w\s'!?.:-]/g, "")
+    .substring(0, 40)
     .trim();
 
-  const message = cleanMessage ? ` for ${cleanMessage}` : "";
+  // Only include message if user typed something
+  const message = cleanMessage ? ` ${cleanMessage}` : "";
 
   const emotes = ["lepBAG", "lepGAMBA", "lepLOVE"];
   const slots = [
