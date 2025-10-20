@@ -82,6 +82,7 @@ return res.send(
 return res.send(
   `${username} spins${message ? ` ${message.trim()} ...` : " ..."} ${slotDisplay} - Try again! lepPOINT`
 );
+});
 
 // Unified route for !slotswin and !lastslotswin
 app.get("/check", async (req, res) => {
