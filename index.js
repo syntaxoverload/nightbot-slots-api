@@ -73,16 +73,21 @@ app.get("/spin", async (req, res) => {
       "an invisibility cloak! lepSTEALTH",
       "a job in the mines! lepBUSINESS"
     ];
-   const reward = rewards[Math.floor(Math.random() * rewards.length)];
+  const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
+// Jackpot win response
 return res.send(
   `${username} spins${message ? ` ${message.trim()} ...` : " ..."} ${slotDisplay} - JACKPOT! lepH You have won ${reward}`
 );
 
+} // <-- closes the if (isJackpot && username) block
+
+// Regular (non-jackpot) response
 return res.send(
   `${username} spins${message ? ` ${message.trim()} ...` : " ..."} ${slotDisplay} - Try again! lepPOINT`
 );
 });
+
 
 // Unified route for !slotswin and !lastslotswin
 app.get("/check", async (req, res) => {
