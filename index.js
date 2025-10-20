@@ -73,13 +73,15 @@ app.get("/spin", async (req, res) => {
       "an invisibility cloak! lepSTEALTH",
       "a job in the mines! lepBUSINESS"
     ];
-    const reward = rewards[Math.floor(Math.random() * rewards.length)];
+   const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
-    return res.send(`${username} spins${message}... ${slotDisplay} - JACKPOT! lepH You have won ${reward}`);
-  }
+return res.send(
+  `${username} spins${message ? ` ${message.trim()} ...` : " ..."} ${slotDisplay} - JACKPOT! lepH You have won ${reward}`
+);
 
-  return res.send(`${username} spins${message}... ${slotDisplay} - Try again! lepPOINT`);
-});
+return res.send(
+  `${username} spins${message ? ` ${message.trim()} ...` : " ..."} ${slotDisplay} - Try again! lepPOINT`
+);
 
 // Unified route for !slotswin and !lastslotswin
 app.get("/check", async (req, res) => {
