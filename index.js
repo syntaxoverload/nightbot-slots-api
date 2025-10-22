@@ -70,6 +70,7 @@ app.get("/spin", async (req, res) => {
       "an exorcism! lepMONK",
       "a new washing machine! lepSTUCK",
       "a lep walk! lepGO",
+      "a lil lep plushie! lepHUG",
       "an invisibility cloak! lepSTEALTH",
       "a job in the mines! lepBUSINESS"
     ];
