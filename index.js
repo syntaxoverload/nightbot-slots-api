@@ -75,6 +75,7 @@ app.get("/spin", async (req, res) => {
       "a lep walk! lepGO",
       "a lil lep plushie! lepHUG",
       "an invisibility cloak! lepSTEALTH",
+      "a court summons lepJUDGE because you killed Santa! lepF",
       "a job in Santa's workshop! lepBUSINESS"
     ];
   const reward = rewards[Math.floor(Math.random() * rewards.length)];
