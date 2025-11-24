@@ -64,15 +64,18 @@ app.get("/spin", async (req, res) => {
       "a free tower carry! lepCARRY",
       "a new hot tub! lepTUB",
       "a cup of coffee! lepCLASSIC",
+      "a mug of hot cocoa! lepCH",
+      "christmas presents! lepH lepPLS",
+      "NOTHING! Santa steals your candy since you were bad this year! lepGOTTEM",
       "free piano lessons by keyboard cat! MEOW lepKB",
       "a free hot yoga class! lepSUSSY lepSTRETCH",
       "a trip to jail! lepJAIL",
       "an exorcism! lepMONK",
-      "a new washing machine! lepSTUCK",
+      "chimney cleaning services from Santa! lepSTUCK",
       "a lep walk! lepGO",
       "a lil lep plushie! lepHUG",
       "an invisibility cloak! lepSTEALTH",
-      "a job in the mines! lepBUSINESS"
+      "a job in Santa's workshop! lepBUSINESS"
     ];
   const reward = rewards[Math.floor(Math.random() * rewards.length)];
 
