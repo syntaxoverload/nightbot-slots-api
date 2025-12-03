@@ -69,13 +69,12 @@ app.get("/spin", async (req, res) => {
       "NOTHING! Santa stole your candy since you were bad this year! lepGOTTEM lepSAD",
       "free piano lessons by keyboard cat! MEOW lepKB",
       "a free hot yoga class! lepSUSSY lepSTRETCH",
-      "a trip to jail! lepJAIL",
+      "a trip to jail! lepSPEED lepF lepJAIL",
       "an exorcism! lepMONK",
       "chimney cleaning services from Santa! lepSTUCK",
       "a lep walk! lepGO",
       "a lil lep plushie! lepHUG",
       "an invisibility cloak! lepSTEALTH",
-      "a court summons lepJUDGE because you killed Santa! lepF",
       "a moment under the mistletoe with chat! lepLOOKUP lepSHY",
       "a job in Santa's workshop! lepBUSINESS"
     ];
