@@ -55,7 +55,7 @@ app.get("/spin", async (req, res) => {
       "a flight on lepAir lepFLY",
       "a new fridge! lepFRIDGE",
       "KIRKLAND brand sparkling water! lepJEJ",
-      "1 billion dollars! lepBURNMONEY",
+      "1 billion dollars! peepoBurnMoney",
       "priceless art! lepYEPBYLEP",
       "priceless art! lepART",
       "priceless art! lepPAUSEBYKATE",
