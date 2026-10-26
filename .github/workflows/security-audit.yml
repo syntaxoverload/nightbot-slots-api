@@ -2,9 +2,6 @@ name: Dependency Security Audit
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -23,7 +20,7 @@ jobs:
           node-version: "22.23.4"
 
       - name: Install dependencies
-        run: npm install --ignore-scripts --package-lock=false
+        run: npm install --ignore-scripts
 
       - name: Audit dependencies
-        run: npm audit --json
+        run: npm audit
